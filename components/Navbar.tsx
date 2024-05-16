@@ -12,15 +12,17 @@ import MobileNavbar from "./MobileNavbar";
 const Navbar = () => {
   const [type, setType] = useState<null | "signup" | "signin">(null);
   const [isOpen, setIsOpen] = useState<boolean>(false);
+
   const { data } = useSession();
+  
   return (
-    <div className="py-5 border-bottom border-s-zinc-200 fixed w-full border-b-2 border-cyan-400 z-10 top-0">
+    <div className="py-5 bg-white border-bottom border-s-zinc-200 fixed w-full border-b-2 border-cyan-400 z-10 top-0">
       <div className="container flex items-center justify-between">
         <Link href="/">
           <PageLogo />
         </Link>
         {data?.user ? (
-          <UserAccountNav />
+          <UserAccountNav user={data.user}/>
         ) : (
           <>
             <div className="hidden md:flex gap-10">
@@ -54,7 +56,7 @@ const Navbar = () => {
           />
         )}
       </div>
-      <AnimatePresence>{isOpen && <MobileNavbar setType={setType} setIsOpen={setIsOpen}/>}</AnimatePresence>
+      <AnimatePresence>{isOpen && <MobileNavbar setType={setType} setIsOpen={setIsOpen} user={data?.user}/>}</AnimatePresence>
     </div>
   );
 };

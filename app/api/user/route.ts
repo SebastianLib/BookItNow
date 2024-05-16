@@ -1,12 +1,12 @@
 import { db } from "@/lib/db";
-import { CreateUserSchema } from "@/schemas/SignUpSchema";
+import { SignUpSchema } from "@/schemas/SignUpSchema";
 import { hash } from "bcrypt";
 import { NextResponse } from "next/server";
 
 export async function POST(req: Request) {
     try {
         const body = await req.json();
-        const { email, username, password } = CreateUserSchema.parse(body);
+        const { email, username, password } = SignUpSchema.parse(body);
 
         const existingUserByEmail = await db.user.findUnique({
             where: { email: email }

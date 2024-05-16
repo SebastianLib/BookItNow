@@ -12,8 +12,6 @@ import {
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Input } from "../ui/input";
 import { Button } from "../ui/button";
-import Link from "next/link";
-import GoogleSignInButton from "../GoogleSignInButton";
 import { useRouter } from "next/navigation";
 import { useToast } from "../ui/use-toast";
 import { useMutation } from "@tanstack/react-query";
@@ -33,7 +31,7 @@ const SignUpForm = ({closeModal}:{closeModal:()=>void}) => {
       });
     },
     onSuccess: () => {
-      router.push("sign-in");
+      router.push("/");
       closeModal()
     },
     onError: () => {

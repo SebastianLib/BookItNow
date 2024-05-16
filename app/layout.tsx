@@ -23,7 +23,7 @@ export default function RootLayout({
       <body className={inter.className}>
         <TanstackProvider>
           <Provider>
-            <main className="h-screen flex flex-col justify-center items-center">
+            <main className="min-h-screen flex flex-col justify-center items-center">
               <Navbar />
               {children}
             </main>
