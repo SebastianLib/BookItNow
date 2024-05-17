@@ -1,73 +1,71 @@
 import { NextAuthOptions } from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials"
-import {PrismaAdapter} from "@next-auth/prisma-adapter"
+import { PrismaAdapter } from "@next-auth/prisma-adapter"
 import { db } from "./db";
 import { compare } from "bcrypt";
 
-export const authOptions:NextAuthOptions = {
+export const authOptions: NextAuthOptions = {
     adapter: PrismaAdapter(db),
     secret: process.env.NEXTAUTH_SECRET,
-    session:{
+    session: {
         strategy: "jwt"
     },
-    pages:{
+    pages: {
         signIn: "/"
     },
     providers: [
         CredentialsProvider({
-          name: 'Credentials',
-          credentials: {
-            email: { label: "email", type: "email", placeholder: "jsmith@gmail.com" },
-            password: { label: "Password", type: "password" }
-          },
-          async authorize(credentials) {
+            name: 'Credentials',
+            credentials: {
+                email: { label: "email", type: "email", placeholder: "jsmith@gmail.com" },
+                password: { label: "Password", type: "password" }
+            },
+            async authorize(credentials) {
 
-            if(!credentials?.email || !credentials?.password) {
-                return null
-            }
+                if (!credentials?.email || !credentials?.password) {
+                    return null
+                }
 
-            const existingUser = await db.user.findUnique({
-                where: {email: credentials.email}
-            })
-            if(!existingUser) {
-                return null
-            }
+                const existingUser = await db.user.findUnique({
+                    where: { email: credentials.email }
+                })
+                if (!existingUser) {
+                    return null
+                }
 
-            const passwordMatch = await compare(credentials.password, existingUser.password)
-        
-            if(!passwordMatch) {
-                return null
-            }
+                const passwordMatch = await compare(credentials.password, existingUser.password)
 
-            return {
-                id: existingUser.id,
-                username: existingUser.username,
-                email: existingUser.email,
+                if (!passwordMatch) {
+                    return null
+                }
+
+                return existingUser
             }
-        }
         })
-      ],
-      callbacks: {
-        async jwt({ token, user, }) {
-            if(user){
+    ],
+    callbacks: {
+        async jwt({ token, user }) {
+            
+            if (user) {
                 return {
                     ...token,
                     username: user.username,
-                }
+                    isCreator: user.isCreator
+                };
             }
-            return token
-          },
-        async session({ session, token }) {    
-            
+            return token;
+        },
+        async session({ session, token }) {
             return {
                 ...session,
-                user:{
+                user: {
                     ...session.user,
                     id: token.sub,
                     username: token.username,
-                    image: session.user.image
+                    image: session.user.image,
+                    isCreator: token.isCreator
                 }
-            }        
-          }
-      }
+            }
+        }
+    }
 }  

@@ -4,6 +4,7 @@ import { useForm } from "react-hook-form";
 import {
   Form,
   FormControl,
+  FormDescription,
   FormField,
   FormItem,
   FormLabel,
@@ -17,6 +18,8 @@ import { useToast } from "../ui/use-toast";
 import { useMutation } from "@tanstack/react-query";
 import axios from "axios";
 import { SignUpSchema, SignUpSchemaType } from "@/schemas/SignUpSchema";
+import { Checkbox } from "../ui/checkbox";
+import Link from "next/link";
 
 const SignUpForm = ({closeModal}:{closeModal:()=>void}) => {
   const { toast } = useToast();
@@ -27,10 +30,16 @@ const SignUpForm = ({closeModal}:{closeModal:()=>void}) => {
       return axios.post("api/user", {
         username: values.username,
         email: values.email,
+        confirmPassword: values.confirmPassword,
         password: values.password,
+        isCreator: values.isCreator,
       });
     },
     onSuccess: () => {
+      toast({
+        title: "Hurra!",
+        description: "You are now signed up. you can sign in now",
+      });
       router.push("/");
       closeModal()
     },
@@ -121,6 +130,28 @@ const SignUpForm = ({closeModal}:{closeModal:()=>void}) => {
                 </FormItem>
               )}
             />
+          <FormField
+          control={form.control}
+          name="isCreator"
+          render={({ field }) => (
+            <FormItem className="flex flex-row items-start space-x-3 space-y-0 rounded-md border p-4">
+              <FormControl>
+                <Checkbox
+                  checked={field.value}
+                  onCheckedChange={field.onChange}
+                />
+              </FormControl>
+              <div className="space-y-1 leading-none">
+                <FormLabel>
+                are you creator?
+                </FormLabel>
+                <FormDescription>
+                  You can choose your services and start booking clients on this platform.
+                </FormDescription>
+              </div>
+            </FormItem>
+          )}
+        />
           </div>
           <Button disabled={isPending} className="w-full mt-6" type="submit">
             Sign up

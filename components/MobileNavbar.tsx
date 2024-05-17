@@ -1,4 +1,6 @@
+import { creatorLinks } from "@/constants/creatorLinks";
 import { logoutUserLinks } from "@/constants/logoutUserLinks";
+import { userLinks } from "@/constants/userLinks";
 import { mobileNavbarLi, mobileNavbarUl } from "@/constants/variants";
 import { motion } from "framer-motion";
 import { signOut } from "next-auth/react";
@@ -12,6 +14,7 @@ interface MobileNavbarProps {
     email?: string | null;
     id: string;
     image?: string | null;
+    isCreator: boolean;
   };
 }
 
@@ -61,12 +64,41 @@ const MobileNavbar = ({ setType, setIsOpen, user }: MobileNavbarProps) => {
                 Sign Out
               </Link>
             </motion.li>
+            {user.isCreator ? (
+              <>
+                {creatorLinks.map((link) => (
+                  <motion.li
+                  key={link.href}
+                    className="text-2xl font-semibold text-cyan-500  cursor-pointer"
+                    variants={mobileNavbarLi}
+                  >
+                    <Link href={link.href}>
+                      {link.label}
+                    </Link>
+                  </motion.li>
+                ))}
+              </>
+            ) : (
+              <>
+                {userLinks.map((link) => (
+                  <motion.li
+                  key={link.href}
+                    className="text-2xl font-semibold text-cyan-500  cursor-pointer"
+                    variants={mobileNavbarLi}
+                  >
+                    <Link href={link.href}>
+                      {link.label}
+                    </Link>
+                  </motion.li>
+                ))}
+              </>
+            )}
           </>
         ) : (
           <>
             {logoutUserLinks.map((link) => (
               <motion.li
-              key={link.type}
+                key={link.type}
                 onClick={() => handleCLick(link.type)}
                 className="text-2xl font-semibold text-cyan-500  cursor-pointer"
                 variants={mobileNavbarLi}

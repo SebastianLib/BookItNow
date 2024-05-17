@@ -4,10 +4,10 @@ import { hash } from "bcrypt";
 import { NextResponse } from "next/server";
 
 export async function POST(req: Request) {
+
     try {
         const body = await req.json();
-        const { email, username, password } = SignUpSchema.parse(body);
-
+        const { email, username, password, isCreator } = SignUpSchema.parse(body);
         const existingUserByEmail = await db.user.findUnique({
             where: { email: email }
         });
@@ -30,7 +30,8 @@ export async function POST(req: Request) {
             data: {
                 username,
                 email,
-                password: hashedPassword
+                password: hashedPassword,
+                isCreator
             }
         })
         const { password: newUserPassword, ...rest } = newUser;

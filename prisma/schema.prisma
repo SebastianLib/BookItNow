@@ -14,14 +14,14 @@ datasource db {
 }
 
 model User {
-  id        String   @id @default(auto()) @map("_id") @db.ObjectId
-  email     String   @unique
-  username  String   @unique
-  password  String
-  createdAt DateTime @default(now())
-  updateAt  DateTime @updatedAt
-  service   Service? @relation(fields: [serviceId], references: [id])
-  serviceId String?  @db.ObjectId
+  id          String        @id @default(auto()) @map("_id") @db.ObjectId
+  email       String        @unique
+  username    String        @unique
+  password    String
+  isCreator   Boolean       @default(false)
+  createdAt   DateTime      @default(now())
+  updateAt    DateTime      @updatedAt
+  userService UserService[]
 }
 
 model Category {
@@ -31,9 +31,18 @@ model Category {
 }
 
 model Service {
-  id         String   @id @default(auto()) @map("_id") @db.ObjectId
-  name       String   @unique
-  category   Category @relation(fields: [categoryId], references: [id])
-  categoryId String   @db.ObjectId
-  users       User[]
+  id          String        @id @default(auto()) @map("_id") @db.ObjectId
+  name        String        @unique
+  category    Category      @relation(fields: [categoryId], references: [id])
+  categoryId  String        @db.ObjectId
+  UserService UserService[]
+}
+
+model UserService {
+  id        String  @id @default(auto()) @map("_id") @db.ObjectId
+  userId    String  @db.ObjectId
+  serviceId String  @db.ObjectId
+  minutes   Int     @default(30)
+  user      User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+  service   Service @relation(fields: [serviceId], references: [id], onDelete: Cascade)
 }

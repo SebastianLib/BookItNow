@@ -24,25 +24,19 @@ import {
 } from "@/components/ui/select";
 import { toast } from "@/components/ui/use-toast";
 import { Category } from "@prisma/client";
+import { cn } from "@/lib/utils";
+import { Homeschema, HomeschemaType } from "@/schemas/HomeSchema";
 
 interface CategoryFormProps {
   categories: Category[];
 }
 
-const FormSchema = z.object({
-  email: z
-    .string({
-      required_error: "Please select an email to display.",
-    })
-    .email(),
-});
-
 export function CategoryForm({ categories }: CategoryFormProps) {
-  const form = useForm<z.infer<typeof FormSchema>>({
-    resolver: zodResolver(FormSchema),
+  const form = useForm<HomeschemaType>({
+    resolver: zodResolver(Homeschema),
   });
 
-  function onSubmit(data: z.infer<typeof FormSchema>) {
+  function onSubmit(data: HomeschemaType) {
     toast({
       title: "You submitted the following values:",
       description: (
@@ -52,21 +46,23 @@ export function CategoryForm({ categories }: CategoryFormProps) {
       ),
     });
   }
-
   return (
     <Form {...form}>
       <form
         onSubmit={form.handleSubmit(onSubmit)}
-        className="flex items-center w-full p-2 md:p-4 max-w-lg bg-white"
+        className="flex items-center font-bold w-full p-2 md:p-4 max-w-xl bg-white"
       >
         <FormField
           control={form.control}
-          name="email"
+          name="category"
           render={({ field }) => (
-            <FormItem className="flex-grow">
+            <FormItem className={cn(
+              "flex-grow",
+              form.getValues().category && "text-cyan-500"
+            )}>
               <Select onValueChange={field.onChange} defaultValue={field.value}>
                 <FormControl
-                  className="text-lg md:text-2xl font-semibold p-8 border-none focus-visible:ring-offset-0 focus-visible:ring-transparent
+                  className="text-lg md:text-2xl p-8 border-none focus-visible:ring-offset-0 focus-visible:ring-transparent
                 outline-none"
                 >
                   <SelectTrigger>
@@ -75,7 +71,7 @@ export function CategoryForm({ categories }: CategoryFormProps) {
                 </FormControl>
                 <SelectContent>
                   {categories.map((category) => (
-                    <SelectItem value={category.id} key={category.id}>
+                    <SelectItem className="text-lg px-8 " value={category.id} key={category.id}>
                       {category.name}
                     </SelectItem>
                   ))}
@@ -85,8 +81,8 @@ export function CategoryForm({ categories }: CategoryFormProps) {
             </FormItem>
           )}
         />
-        <Button type="submit" className="p-4 md:p-8 rounded-none text-lg md:text-xl">
-          Submit
+        <Button type="submit" className="px-8 py-8 md:px-16 rounded-none text-lg md:text-xl">
+          OK!
         </Button>
       </form>
     </Form>
