@@ -1,5 +1,5 @@
 import { db } from "@/lib/db";
-import { CategoryForm } from "./components/CategoryForm";
+import { CategoryForm } from "./_components/CategoryForm";
 
 export default async function Home() {
   // const session = await getServerSession(authOptions)
