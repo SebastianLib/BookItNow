@@ -19,9 +19,10 @@ import { useMutation } from "@tanstack/react-query";
 import axios from "axios";
 import { SignUpSchema, SignUpSchemaType } from "@/schemas/SignUpSchema";
 import { Checkbox } from "../ui/checkbox";
-import Link from "next/link";
+import { useAuthModalStore } from "@/store/AuthModalStore";
 
-const SignUpForm = ({closeModal}:{closeModal:()=>void}) => {
+const SignUpForm = () => {
+  const {changeType} = useAuthModalStore(state => state)
   const { toast } = useToast();
   const router = useRouter();
 
@@ -41,7 +42,7 @@ const SignUpForm = ({closeModal}:{closeModal:()=>void}) => {
         description: "You are now signed up. you can sign in now",
       });
       router.push("/");
-      closeModal()
+      changeType(null)
     },
     onError: () => {
       toast({

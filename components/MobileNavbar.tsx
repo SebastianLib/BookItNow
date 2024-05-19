@@ -2,13 +2,12 @@ import { creatorLinks } from "@/constants/creatorLinks";
 import { logoutUserLinks } from "@/constants/logoutUserLinks";
 import { userLinks } from "@/constants/userLinks";
 import { mobileNavbarLi, mobileNavbarUl } from "@/constants/variants";
+import { useAuthModalStore } from "@/store/AuthModalStore";
 import { motion } from "framer-motion";
 import { signOut } from "next-auth/react";
 import Link from "next/link";
 
 interface MobileNavbarProps {
-  setType: React.Dispatch<React.SetStateAction<null | "signup" | "signin">>;
-  setIsOpen: React.Dispatch<React.SetStateAction<boolean>>;
   user?: {
     username: string;
     email?: string | null;
@@ -18,11 +17,13 @@ interface MobileNavbarProps {
   };
 }
 
-const MobileNavbar = ({ setType, setIsOpen, user }: MobileNavbarProps) => {
+const MobileNavbar = ({  user }: MobileNavbarProps) => {
+  const {onClose, isOpen, changeType} = useAuthModalStore(state => state)
+
   const handleCLick = (type: "signup" | "signin") => {
-    setIsOpen(false),
+    onClose()
       setTimeout(() => {
-        setType(type);
+        changeType(type);
       }, 500);
   };
 

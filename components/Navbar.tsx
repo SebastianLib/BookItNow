@@ -9,10 +9,10 @@ import { Menu, X } from "lucide-react";
 import MobileNavbar from "./MobileNavbar";
 import LogoutUserNavbar from "./LogoutUserNavbar";
 import { Skeleton } from "./ui/skeleton";
+import { useAuthModalStore } from "@/store/AuthModalStore";
 
 const Navbar = () => {
-  const [type, setType] = useState<null | "signup" | "signin">(null);
-  const [isOpen, setIsOpen] = useState<boolean>(false);
+  const {onClose, onOpen, isOpen, type, changeType} = useAuthModalStore(state => state)
 
   const { data, status } = useSession();
 
@@ -31,16 +31,16 @@ const Navbar = () => {
         ) : data?.user ? (
           <LoggedUserNav user={data.user} />
         ) : (
-          <LogoutUserNavbar type={type} setType={setType} />
+          <LogoutUserNavbar/>
         )}
         {!isOpen ? (
           <Menu
-            onClick={() => setIsOpen(true)}
+            onClick={onOpen}
             className="flex md:hidden w-[30px] h-[30px] text-cyan-500 hover:text-cyan-700 cursor-pointer transition"
           />
         ) : (
           <X
-            onClick={() => setIsOpen(false)}
+            onClick={onClose}
             className="flex md:hidden w-[30px] h-[30px] text-cyan-500 hover:text-cyan-700 cursor-pointer transition"
           />
         )}
@@ -48,8 +48,6 @@ const Navbar = () => {
       <AnimatePresence>
         {isOpen && (
           <MobileNavbar
-            setType={setType}
-            setIsOpen={setIsOpen}
             user={data?.user}
           />
         )}

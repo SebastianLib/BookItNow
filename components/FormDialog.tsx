@@ -5,28 +5,24 @@ import SignInForm from "./form/SignInForm";
 import {motion } from "framer-motion";
 import { X } from "lucide-react";
 import { authVariants } from "@/constants/variants";
+import { useAuthModalStore } from "@/store/AuthModalStore";
 
-interface FormDialogProps {
-  type: "signup" | "signin" | null;
-  setType: React.Dispatch<React.SetStateAction<null | "signup" | "signin">>;
-}
 
-const FormDialog = ({ type, setType }: FormDialogProps) => {
+const FormDialog = () => {
+  const {type, changeType} = useAuthModalStore(state => state)
   const handleClick = (e: any) => {
     if (e.target.classList.contains("bg-black/50")) {
-      setType(null);
+      changeType(null);
     }
   };
 
   const handleChangeType = () => {
-    setType((prev) => {
-      if (prev === "signup") {
-        return "signin";
+      if (type === "signup") {
+        changeType("signin")
       } else {
-        return "signup";
+        changeType("signup")
       }
-    });
-  };
+    };
 
   return (
       <motion.div
@@ -49,9 +45,9 @@ const FormDialog = ({ type, setType }: FormDialogProps) => {
         >
           <h2 className="text-center mb-6 text-xl font-semibold">{type === "signup" ? "Sign Up" : "Sign In"}</h2>
           {type === "signup" ? (
-            <SignUpForm closeModal={() => setType(null)} />
+            <SignUpForm/>
           ) : (
-            <SignInForm closeModal={() => setType(null)} />
+            <SignInForm/>
           )}
           
           <p className="text-center text-sm text-gray-600 mt-2">
@@ -65,7 +61,7 @@ const FormDialog = ({ type, setType }: FormDialogProps) => {
           </p>
           <div
             className="absolute top-4 right-4 "
-            onClick={() => setType(null)}
+            onClick={() => changeType(null)}
           >
             <X className="hover:text-black/80 transition-colors cursor-pointer"/>
           </div>

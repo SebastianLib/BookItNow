@@ -15,8 +15,10 @@ import { signIn } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
 import { useToast } from "@/components/ui/use-toast"
 import { SignInSchema, SignInSchemaType } from '@/schemas/SignInSchema';
+import { useAuthModalStore } from '@/store/AuthModalStore';
 
-const SignInForm = ({closeModal}:{closeModal:()=>void}) => {
+const SignInForm = () => {
+  const {changeType} = useAuthModalStore(state => state)
   const { toast } = useToast()
   const router = useRouter();
   const form = useForm<SignInSchemaType>({
@@ -47,7 +49,7 @@ const SignInForm = ({closeModal}:{closeModal:()=>void}) => {
         description: "Now you are signed in.",
       });
       router.push("/")
-      closeModal()
+      changeType(null)
     }
   };
 
