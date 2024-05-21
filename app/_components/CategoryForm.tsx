@@ -37,14 +37,7 @@ export function CategoryForm({ categories }: CategoryFormProps) {
   });
 
   function onSubmit(data: HomeschemaType) {
-    toast({
-      title: "You submitted the following values:",
-      description: (
-        <pre className="mt-2 w-[340px] rounded-md bg-slate-950 p-4">
-          <code className="text-white">{JSON.stringify(data, null, 2)}</code>
-        </pre>
-      ),
-    });
+
   }
   return (
     <Form {...form}>
@@ -63,7 +56,7 @@ export function CategoryForm({ categories }: CategoryFormProps) {
               <Select onValueChange={field.onChange} defaultValue={field.value}>
                 <FormControl
                   className="text-lg md:text-2xl p-8 border-none focus-visible:ring-offset-0 focus-visible:ring-transparent
-                outline-none"
+                  outline-none"
                 >
                   <SelectTrigger>
                     <SelectValue placeholder="Select Category" />

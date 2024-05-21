@@ -45,10 +45,10 @@ const WorkPage = async () => {
   });
 
   return (
-    <section>
+    <div>
       <UserServices services={userServices} />
       <AllServices categoriesWithServices={categoriesWithServices}/>
-    </section>
+    </div>
   );
 };
 
