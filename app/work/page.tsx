@@ -18,8 +18,8 @@ const WorkPage = async () => {
       service: true,
     },
   });
-  const userServicesIds = userServices.map((userService) => userService.id);
-
+  const userServicesIds = userServices.map((userService) => userService.serviceId);
+  
   // const allServices = await db.service.findMany({
   //     where: {
   //         NOT: {
@@ -30,7 +30,8 @@ const WorkPage = async () => {
   //     }
   // });
   const categoriesWithServices = await db.category.findMany({
-    where: {},
+    where: {
+    },
     include: {
       services: {
         where: {
@@ -43,6 +44,7 @@ const WorkPage = async () => {
       },
     },
   });
+  
 
   return (
     <div>

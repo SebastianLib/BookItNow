@@ -48,13 +48,13 @@ export function UserServicesForm({ form, services }: UserServicesForProps) {
                       >
                         <FormControl>
                           <Checkbox
-                            checked={field.value?.includes(service.id)}
-                            onCheckedChange={(checked) => {
+                            checked={field.value?.some(item => item.id === service.id)}
+                            onCheckedChange={(checked) => {form.clearErrors()
                               return checked
-                                ? field.onChange([...field.value, service.id])
+                                ? field.onChange([...field.value, { id: service.id, name: service.name, minutes: 30}])
                                 : field.onChange(
                                     field.value?.filter(
-                                      (value) => value !== service.id
+                                      (value) => value.id !== service.id
                                     )
                                   )
                             }}
@@ -68,7 +68,6 @@ export function UserServicesForm({ form, services }: UserServicesForProps) {
                   }}
                 />
               ))}
-              <FormMessage />
             </FormItem>
           )}
         />

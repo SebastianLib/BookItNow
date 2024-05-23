@@ -2,10 +2,16 @@ import { useToast } from "@/components/ui/use-toast";
 import { useMutation } from "@tanstack/react-query";
 import axios from "axios";
 
+interface Props {
+  id: string;
+  name: string;
+  minutes: number;
+}
+
 export function useAddUserServicesMutation() {
   const { toast } = useToast()
   return useMutation({
-    mutationFn: (newServices: string[]) => {
+    mutationFn: (newServices:Props[]) => {
       return axios.post('/api/services', newServices);
     },
     onError: () => {

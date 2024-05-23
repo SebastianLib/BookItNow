@@ -55,7 +55,6 @@ const UserCategoryForm = ({ form, category }: UserCategoryForProps) => {
               ))}
             </SelectContent>
           </Select>
-          <FormMessage />
         </FormItem>
       )}
     />

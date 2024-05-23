@@ -22,7 +22,8 @@ export async function POST(req: Request) {
                 await db.userService.create({
                     data: {
                         userId: session.user.id,
-                        serviceId: service
+                        serviceId: service.id,
+                        minutes: service.minutes,
                     }
                 });
             } catch (error) {

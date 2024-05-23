@@ -3,7 +3,6 @@ import { Category, Service } from "@prisma/client";
 import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
-import { z } from "zod";
 import { Button } from "@/components/ui/button";
 import { Form } from "@/components/ui/form";
 import {
@@ -13,9 +12,8 @@ import {
 import UserCategoryForm from "./UserCategoryForm";
 import { useEffect, useState } from "react";
 import { UserServicesForm } from "./UserServicesForm";
-import { useMutation } from "@tanstack/react-query";
-import axios from "axios";
 import { useAddUserServicesMutation } from "@/actions/useAddUserServicesMutation";
+import { UserServicesMinutesForm } from "./UserServicesMinutesForm";
 
 interface AllServicesProps {
   categoriesWithServices: Category[] &
@@ -25,36 +23,43 @@ interface AllServicesProps {
 }
 
 const AllServices = ({ categoriesWithServices }: AllServicesProps) => {
-
-  const [services, setServices] = useState<Service[]>([])
+  const [services, setServices] = useState<Service[]>([]);
   const form = useForm<UserServicesSchemaType>({
     resolver: zodResolver(UserServicesSchema),
     defaultValues: {
       category: "",
-      services: []
+      services: [],
     },
   });
-  const mutation = useAddUserServicesMutation()
+  const mutation = useAddUserServicesMutation();
 
   const watchCategory = form.watch("category");
+  const watchServices = form.watch("services");
+
   const allServices = categoriesWithServices.flatMap((category: any) => [
     ...category.services,
   ]);
 
-  function onSubmit(data: UserServicesSchemaType) { 
-    mutation.mutate(data.services)
+  function onSubmit(data: UserServicesSchemaType) {
+    mutation.mutate(data.services, {
+      onSuccess: () => {
+        form.reset();
+      },
+    });
   }
 
   useEffect(() => {
-    setServices(allServices.filter((service) => service.categoryId === watchCategory))
+    setServices(
+      allServices.filter((service) => service.categoryId === watchCategory)
+    );
   }, [watchCategory]);
 
   return (
-    <Dialog>
+    <Dialog onOpenChange={() => form.reset()}>
       <DialogTrigger className="border border-cyan-500 bg-background hover:bg-accent text-cyan-500 px-6 py-2 rounded-full">
         Change Your Services
       </DialogTrigger>
-      <DialogContent className="max-w-[500px] w-full">
+      <DialogContent className="max-w-[700px] w-full">
         <h2 className="text-3xl md:text-4xl font-bold text-center text-cyan-500 mt-8 mb-4">
           Add New Services
         </h2>
@@ -65,11 +70,16 @@ const AllServices = ({ categoriesWithServices }: AllServicesProps) => {
           >
             <UserCategoryForm category={categoriesWithServices} form={form} />
             {watchCategory && (
-              <UserServicesForm services={services} form={form} />
+              <>
+                <UserServicesForm services={services} form={form} />
+                {form.getValues().services.length > 0 && (
+                  <UserServicesMinutesForm form={form} />
+                )}
+              </>
             )}
             <Button
               type="submit"
-              disabled={mutation.isPending}
+              disabled={mutation.isPending || watchServices.length === 0}
               className="w-full px-8 py-8 md:px-16 rounded-none text-lg md:text-xl"
             >
               SUBMIT!
