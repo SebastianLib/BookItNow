@@ -40,12 +40,14 @@ const AllServices = ({ categoriesWithServices }: AllServicesProps) => {
     ...category.services,
   ]);
 
-  function onSubmit(data: UserServicesSchemaType) {
-    mutation.mutate(data.services, {
-      onSuccess: () => {
-        form.reset();
-      },
-    });
+  function onSubmit(data: UserServicesSchemaType) { 
+    console.log(data.services);
+       
+    // mutation.mutate(data.services, {
+    //   onSuccess: () => {
+    //     form.reset();
+    //   },
+    // });
   }
 
   useEffect(() => {

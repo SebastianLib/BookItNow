@@ -30,8 +30,8 @@ export function UserServicesForm({ form, services }: UserServicesForProps) {
           render={() => (
             <FormItem className="self-start">
               <div className="mb-4">
-                <FormLabel className="text-base">Services</FormLabel>
-                <FormDescription>
+                <FormLabel className="text-2xl font-bold">Services</FormLabel>
+                <FormDescription className="text-xl">
                   Select the services you want to add.
                 </FormDescription>
               </div>

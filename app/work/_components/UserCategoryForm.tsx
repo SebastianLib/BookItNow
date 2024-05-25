@@ -10,6 +10,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { useGenerateMinutes } from "@/hooks/useGenerateMinutes";
 import { cn } from "@/lib/utils";
 import { UserServicesSchemaType } from "@/schemas/UserServicesSchema";
 import { Category } from "@prisma/client";
@@ -23,6 +24,7 @@ interface UserCategoryForProps {
 }
 
 const UserCategoryForm = ({ form, category }: UserCategoryForProps) => {
+
   return (
     <FormField
       control={form.control}
@@ -30,7 +32,7 @@ const UserCategoryForm = ({ form, category }: UserCategoryForProps) => {
       render={({ field }) => (
         <FormItem
           className={cn(
-            " w-full",
+            "w-full",
             form.getValues().category && "text-cyan-500"
           )}
         >
@@ -40,7 +42,7 @@ const UserCategoryForm = ({ form, category }: UserCategoryForProps) => {
                 <SelectValue placeholder="Select Category" />
               </SelectTrigger>
             </FormControl>
-            <SelectContent className="bg-white w-[300px] md:w-[400px] border-cyan-500 border-2">
+            <SelectContent className="bg-white z-20 w-[300px] md:w-[400px] border-cyan-500 border-2">
               {category.map((category) => (
                 <SelectItem
                   className={cn(
