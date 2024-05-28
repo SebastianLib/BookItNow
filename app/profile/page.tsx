@@ -1,0 +1,20 @@
+import MaxWidthWrapper from '@/components/MaxWidthWrapper'
+import { authOptions } from '@/lib/auth';
+import { getServerSession } from 'next-auth';
+import { redirect } from 'next/navigation';
+import React from 'react'
+import UserProfile from './components/UserProfile';
+
+const ProfilePage = async() => {
+    const data = await getServerSession(authOptions);
+    if (!data) redirect("/");
+    console.log(data.user);
+
+  return (
+    <MaxWidthWrapper>
+        <UserProfile user={data.user}/>
+    </MaxWidthWrapper>
+  )
+}
+
+export default ProfilePage

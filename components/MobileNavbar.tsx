@@ -9,7 +9,6 @@ import Link from "next/link";
 
 interface MobileNavbarProps {
   user?: {
-    username: string;
     email?: string | null;
     id: string;
     image?: string | null;

@@ -27,7 +27,7 @@ interface UserServicesMinutesFormProps {
 export function UserServicesMinutesForm({
   form,
 }: UserServicesMinutesFormProps) {
-  const timesArray = useGenerateMinutes();
+  const timesArray = useGenerateMinutes().slice(1);
   return (
     <div className="w-full h-[300px] overflow-y-auto">
       <h2 className="text-2xl mb-2">Type Minutes Duration</h2>

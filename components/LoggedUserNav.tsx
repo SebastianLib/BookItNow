@@ -8,7 +8,6 @@ import { userLinks } from "@/constants/userLinks";
 
 interface LoggedUserNavProps {
   user: {
-    username: string;
     email?: string | null;
     id: string;
     image?: string | null;

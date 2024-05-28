@@ -3,8 +3,9 @@ import { db } from "@/lib/db";
 import { getServerSession } from "next-auth";
 import { redirect } from "next/navigation";
 import React from "react";
-import UserServices from "./_components/UserServices";
-import AllServices from "./_components/AllServices";
+import UserServices from "./components/UserServices";
+import AllServices from "./components/AllServices";
+import MaxWidthWrapper from "@/components/MaxWidthWrapper";
 
 const WorkPage = async () => {
   const data = await getServerSession(authOptions);
@@ -38,10 +39,10 @@ const WorkPage = async () => {
   
 
   return (
-    <div>
+    <MaxWidthWrapper>
       <UserServices services={userServices} />
       <AllServices categoriesWithServices={categoriesWithServices}/>
-    </div>
+    </MaxWidthWrapper>
   );
 };
 

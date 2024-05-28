@@ -1,11 +1,14 @@
-import NextAuth from "next-auth"
-User
+import NextAuth from "next-auth";
+
 declare module "next-auth" {
-    interface User {
-        username: string;
+    export interface User {
         isCreator: boolean;
+        name?: string | null;
+        email?: string | null;
+        image?: string | null;
     }
-  interface Session {
-    user: User
-  }
+
+    interface Session {
+        user: User;
+    }
 }

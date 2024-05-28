@@ -43,11 +43,11 @@ const AllServices = ({ categoriesWithServices }: AllServicesProps) => {
   function onSubmit(data: UserServicesSchemaType) { 
     console.log(data.services);
        
-    // mutation.mutate(data.services, {
-    //   onSuccess: () => {
-    //     form.reset();
-    //   },
-    // });
+    mutation.mutate(data.services, {
+      onSuccess: () => {
+        form.reset();
+      },
+    });
   }
 
   useEffect(() => {

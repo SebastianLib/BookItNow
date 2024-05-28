@@ -1,48 +1,34 @@
-"use client";
-import { useForm } from "react-hook-form";
-import {
-  Form,
-  FormControl,
-  FormDescription,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage,
-} from "../ui/form";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { Input } from "../ui/input";
-import { Button } from "../ui/button";
-import { SignUpSchema, SignUpSchemaType } from "@/schemas/SignUpSchema";
-import { useAuthModalStore } from "@/store/AuthModalStore";
-import { useCreateUserMutation } from "@/actions/useCreateUser";
-import { Switch } from "../ui/switch";
+"use client"
+import { Button } from '@/components/ui/button'
+import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form'
+import { Input } from '@/components/ui/input'
+import { Switch } from '@/components/ui/switch'
+import { EditUserSchema, EditUserSchemaType } from '@/schemas/EditUserProfile'
+import { zodResolver } from '@hookform/resolvers/zod'
+import { User } from 'next-auth'
+import React from 'react'
+import { useForm } from 'react-hook-form'
 
-const SignUpForm = () => {
-  const { changeType } = useAuthModalStore((state) => state);
-  const mutation = useCreateUserMutation();
+const UserProfile = ({user}:{user:User}) => {
 
+    const form = useForm<EditUserSchemaType>({
+        resolver: zodResolver(EditUserSchema),
+        defaultValues: {
+         name: user.name || "",
+          email: user.email || "",
+          oldPassword: "",
+          newPassword: "",
+          isCreator: user.isCreator,
+        },
+      });
+    
+      const onSubmit = async (values: EditUserSchemaType) => {
 
-  const form = useForm<SignUpSchemaType>({
-    resolver: zodResolver(SignUpSchema),
-    defaultValues: {
-      email: "",
-      password: "",
-      confirmPassword: "",
-    },
-  });
-
-  const onSubmit = async (values: SignUpSchemaType) => {
-    // await createUserMutation(values);
-    mutation.mutate(values, {
-      onSuccess: () => {
-        changeType("signin");
-      },
-    });
-  };
+      };
 
   return (
     <Form {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit)} className="w-full space-y-3">
+      <form onSubmit={form.handleSubmit(onSubmit)} className="max-w-3xl mx-auto space-y-3">
           <FormField
             control={form.control}
             name="name"
@@ -71,7 +57,7 @@ const SignUpForm = () => {
           />
           <FormField
             control={form.control}
-            name="password"
+            name="oldPassword"
             render={({ field }) => (
               <FormItem>
                 <FormLabel>Password</FormLabel>
@@ -124,12 +110,12 @@ const SignUpForm = () => {
               </FormItem>
             )}
           />
-        <Button disabled={mutation.isPending} className="w-full mt-6" type="submit">
-          Sign up
+        <Button disabled={false} className="w-full mt-6" type="submit">
+          Update
         </Button>
       </form>
     </Form>
-  );
-};
+  )
+}
 
-export default SignUpForm;
+export default UserProfile
