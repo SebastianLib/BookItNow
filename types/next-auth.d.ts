@@ -2,9 +2,10 @@ import NextAuth from "next-auth";
 
 declare module "next-auth" {
     export interface User {
+        id: string;
         isCreator: boolean;
-        name?: string | null;
-        email?: string | null;
+        name: string;
+        email: string;
         image?: string | null;
     }
 

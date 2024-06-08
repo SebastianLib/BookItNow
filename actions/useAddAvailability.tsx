@@ -3,16 +3,15 @@ import { useMutation } from "@tanstack/react-query";
 import axios from "axios";
 
 interface Props {
-  id: string;
-  name: string;
-  minutes: number;
+  hours?: number[]
+  day: string;
 }
 
-export function useAddUserServicesMutation() {
+export function useAddAvailability() {
   const { toast } = useToast()
   return useMutation({
-    mutationFn: (newServices:Props[]) => {
-      return axios.post('/api/work/services', newServices);
+    mutationFn: (data:Props) => {
+      return axios.post('/api/work/availability', data);
     },
     onError: () => {
       toast({
@@ -21,10 +20,10 @@ export function useAddUserServicesMutation() {
         variant: "destructive"
       });
     },
-    onSuccess: () => {
+    onSuccess: (res) => {      
       toast({
         title: "Hurra!",
-        description: "You have successfully added services",
+        description: `${res.data.message}`,
       });
     }
   });

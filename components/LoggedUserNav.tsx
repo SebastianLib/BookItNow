@@ -53,13 +53,13 @@ const LoggedUserNav = ({ user }: LoggedUserNavProps) => {
       >
         Sign out
       </Button>
-      <Link href="/profile">
+      <Link href="/profile" className="">
         <Image
           src={user.image || "/userImg.png"}
           alt="user image"
-          width={50}
-          height={50}
-          className="rounded-full overflow-hidden cursor-pointer"
+          width={100}
+          height={100}
+          className="rounded-full overflow-hidden cursor-pointer w-12 h-12 object-cover"
         />
       </Link>
     </div>

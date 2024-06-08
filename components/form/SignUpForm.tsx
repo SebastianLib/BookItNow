@@ -32,7 +32,6 @@ const SignUpForm = () => {
   });
 
   const onSubmit = async (values: SignUpSchemaType) => {
-    // await createUserMutation(values);
     mutation.mutate(values, {
       onSuccess: () => {
         changeType("signin");

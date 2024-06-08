@@ -2,7 +2,7 @@
 import Link from "next/link";
 import React, { useState } from "react";
 import LoggedUserNav from "./LoggedUserNav";
-import PageLogo from "@/util/PageLogo";
+import PageLogo from "@/utils/PageLogo";
 import { useSession } from "next-auth/react";
 import { AnimatePresence } from "framer-motion";
 import { Menu, X } from "lucide-react";

@@ -6,6 +6,7 @@ import React from "react";
 import UserServices from "./components/UserServices";
 import AllServices from "./components/AllServices";
 import MaxWidthWrapper from "@/components/MaxWidthWrapper";
+import { Availability } from "./components/Availability";
 
 const WorkPage = async () => {
   const data = await getServerSession(authOptions);
@@ -39,9 +40,12 @@ const WorkPage = async () => {
   
 
   return (
-    <MaxWidthWrapper>
-      <UserServices services={userServices} />
+    <MaxWidthWrapper className="grid md:grid-cols-2">
+      <div>
       <AllServices categoriesWithServices={categoriesWithServices}/>
+      </div>
+      {/* <UserServices services={userServices} /> */}
+      <Availability/>
     </MaxWidthWrapper>
   );
 };
