@@ -2,7 +2,9 @@ import { z } from "zod";
 
 export const AddAvailabilitySchema = z
   .object({
-    day: z.string(),
+    date: z.date({
+      required_error: "A date is required.",
+    }),
     hours: z.array(z.number()).optional(),
   })
 

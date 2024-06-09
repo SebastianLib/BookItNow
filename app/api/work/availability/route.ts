@@ -2,6 +2,7 @@ import { authOptions } from "@/lib/auth";
 import { db } from "@/lib/db";
 import { getServerSession } from "next-auth";
 import { NextResponse } from "next/server";
+import { format } from "date-fns";
 
 export async function POST(req: Request) {
 
@@ -17,7 +18,7 @@ export async function POST(req: Request) {
             await db.userAvailability.deleteMany({
                 where:{
                     userId: session.user.id,
-                    day: data.day
+                    date: format(data.date, 'yyyy-MM-dd')
                 }
             })
             return NextResponse.json({ message: "You have removed hours successfully" }, { status: 201 })
@@ -26,7 +27,7 @@ export async function POST(req: Request) {
         const existingDay = await db.userAvailability.findFirst({
             where:{
                 userId: session.user.id,
-                day: data.day
+                date: format(data.date, 'yyyy-MM-dd')
             }
         })
         
@@ -34,7 +35,7 @@ export async function POST(req: Request) {
             await db.userAvailability.updateMany({
                 where:{
                     userId: session.user.id,
-                    day: data.day
+                    date: format(data.date, 'yyyy-MM-dd')
                 },
                 data:{
                     ...data,
@@ -46,8 +47,9 @@ export async function POST(req: Request) {
 
         await db.userAvailability.create({
             data:{
-                ...data,
-                userId: session.user.id
+                date: format(data.date, 'yyyy-MM-dd'),
+                userId: session.user.id,
+                hours: data.hours,
             }
         })
 

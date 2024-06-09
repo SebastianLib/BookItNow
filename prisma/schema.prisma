@@ -28,7 +28,7 @@ model User {
 
 model UserAvailability {
   id     String  @id @default(auto()) @map("_id") @db.ObjectId
-  day    String
+  date   String
   hours  Int[]
   reserved Boolean @default(false)
   user   User?   @relation(fields: [userId], references: [id])
