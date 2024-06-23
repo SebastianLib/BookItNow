@@ -1,5 +1,5 @@
 import { authOptions } from "@/lib/auth";
-import { db } from "@/lib/db";
+import db from "@/lib/db";
 import { getServerSession } from "next-auth";
 import { NextResponse } from "next/server";
 import { format } from "date-fns";
@@ -12,11 +12,11 @@ export async function POST(req: Request) {
             return NextResponse.json({ message: "unauthorized" },
                 { status: 401 })
         }
-        const data = await req.json();  
-        
-        if(data.hours.length === 0){
+        const data = await req.json();
+
+        if (data.hours.length === 0) {
             await db.userAvailability.deleteMany({
-                where:{
+                where: {
                     userId: session.user.id,
                     date: format(data.date, 'yyyy-MM-dd')
                 }
@@ -25,31 +25,52 @@ export async function POST(req: Request) {
         }
 
         const existingDay = await db.userAvailability.findFirst({
-            where:{
+            where: {
                 userId: session.user.id,
                 date: format(data.date, 'yyyy-MM-dd')
+            },
+            include: {
+                hours: true
             }
         })
-        
-        if(existingDay){
-            await db.userAvailability.updateMany({
-                where:{
-                    userId: session.user.id,
-                    date: format(data.date, 'yyyy-MM-dd')
-                },
-                data:{
-                    ...data,
-                    userId: session.user.id
+
+        if (existingDay) {
+            await db.hours.deleteMany({
+                where: {
+                    userAvailabilityId: existingDay.id
                 }
-            })
-            return NextResponse.json({ message: "You have updated hours successfully" }, { status: 201 })
+            });
+
+            await db.userAvailability.update({
+                where: {
+                    id: existingDay.id
+                },
+                data: {
+                    hours: {
+                        create: data.hours.map((hour: number) => ({
+                            time: hour
+                        }))
+                    }
+                }
+            });
+
+            return NextResponse.json({ message: "You have updated hours successfully" }, { status: 201 });
         }
 
         await db.userAvailability.create({
-            data:{
+            data: {
                 date: format(data.date, 'yyyy-MM-dd'),
                 userId: session.user.id,
-                hours: data.hours,
+                hours: {
+                    create: (
+                        data.hours.map((hour: string) => (
+                            { time: hour }
+                        ))
+                    )
+                }
+            },
+            include: {
+                hours: true,
             }
         })
 

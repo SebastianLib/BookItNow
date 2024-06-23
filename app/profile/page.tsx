@@ -4,7 +4,7 @@ import { getServerSession } from 'next-auth';
 import { redirect } from 'next/navigation';
 import React from 'react'
 import UserProfile from './components/UserProfile';
-import { db } from '@/lib/db';
+import  db  from '@/lib/db';
 
 const ProfilePage = async() => {
     const data = await getServerSession(authOptions);

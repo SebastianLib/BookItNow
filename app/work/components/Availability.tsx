@@ -50,11 +50,9 @@ export function Availability() {
     queryKey: ["currentDate"],
     queryFn: async () => await useGetDate({ selectedDate }),
   });
-  form.setValue("hours", data?.hours);
+  form.setValue("hours", data?.hours.map(hour => hour.time));
 
   async function onSubmit(data: AddAvailabilitySchemaType) {
-    console.log(format(data.date, "yyyy-MM-dd"));
-
     mutation.mutate(data);
   }
 

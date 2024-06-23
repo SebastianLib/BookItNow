@@ -1,4 +1,4 @@
-import { db } from "@/lib/db";
+import  db  from "@/lib/db";
 import { EditUserSchema } from "@/schemas/EditUserProfile";
 import { SignUpSchema } from "@/schemas/SignUpSchema";
 import { hash, compare } from "bcrypt";
@@ -9,7 +9,8 @@ export async function POST(req: Request) {
     try {
         const body = await req.json();
         const { name, email, password, isCreator } = SignUpSchema.parse(body);
-
+        console.log();
+        
         const existingUserByEmail = await db.user.findUnique({
             where: { email: email }
         });

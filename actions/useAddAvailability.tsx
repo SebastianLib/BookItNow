@@ -1,12 +1,14 @@
 import { useToast } from "@/components/ui/use-toast";
 import { AddAvailabilitySchemaType } from "@/schemas/AddAvailabilitySchema";
-import { useMutation } from "@tanstack/react-query";
+import { useQueryClient, useMutation } from "@tanstack/react-query";
 import axios from "axios";
 
 export function useAddAvailability() {
-  const { toast } = useToast()
+  const { toast } = useToast();
+  const queryClient = useQueryClient();
+
   return useMutation({
-    mutationFn: (data:AddAvailabilitySchemaType) => {
+    mutationFn: (data: AddAvailabilitySchemaType) => {
       return axios.post('/api/work/availability', data);
     },
     onError: () => {
@@ -16,7 +18,8 @@ export function useAddAvailability() {
         variant: "destructive"
       });
     },
-    onSuccess: (res) => {      
+    onSuccess: (res) => {
+      queryClient.invalidateQueries({ queryKey: ["currentDate"] });
       toast({
         title: "Hurra!",
         description: `${res.data.message}`,

@@ -38,9 +38,10 @@ const SignInForm = () => {
     })
     
     if(signInData?.error){
+      
       toast({
         title: "Error",
-        description: "Oops! Something went wrong",
+        description: `${signInData.error}`,
         variant: "destructive"
       })
     }else{

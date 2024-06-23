@@ -1,6 +1,6 @@
 "use server"
 import { authOptions } from "@/lib/auth";
-import { db } from "@/lib/db";
+import  db  from "@/lib/db";
 import { format } from "date-fns";
 import { getServerSession } from "next-auth";
 
@@ -12,6 +12,9 @@ export const useGetDate = async ({ selectedDate }: { selectedDate: Date }) => {
             date: format(selectedDate, 'yyyy-MM-dd'),
             userId: session.user.id
         },
+        include:{
+            hours: true
+        }
     });
     if(result) return result;
     return null;

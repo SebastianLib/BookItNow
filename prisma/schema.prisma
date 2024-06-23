@@ -1,9 +1,3 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
-// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
-// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
-
 generator client {
   provider = "prisma-client-js"
 }
@@ -27,12 +21,20 @@ model User {
 }
 
 model UserAvailability {
-  id     String  @id @default(auto()) @map("_id") @db.ObjectId
-  date   String
-  hours  Int[]
+  id       String  @id @default(auto()) @map("_id") @db.ObjectId
+  date     String
   reserved Boolean @default(false)
-  user   User?   @relation(fields: [userId], references: [id])
-  userId String @db.ObjectId
+  user     User?   @relation(fields: [userId], references: [id])
+  userId   String  @db.ObjectId
+  hours    Hours[]
+}
+
+model Hours {
+  id                 String            @id @default(auto()) @map("_id") @db.ObjectId
+  time               Int
+  isTaken            Boolean           @default(false)
+  userAvailability   UserAvailability? @relation(fields: [userAvailabilityId], references: [id])
+  userAvailabilityId String            @db.ObjectId
 }
 
 model Category {
