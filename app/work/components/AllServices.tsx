@@ -14,6 +14,7 @@ import { useEffect, useState } from "react";
 import { UserServicesForm } from "./UserServicesForm";
 import { useAddUserServicesMutation } from "@/actions/useAddUserServicesMutation";
 import { UserServicesMinutesForm } from "./UserServicesMinutesForm";
+import { useRouter } from "next/navigation";
 
 interface AllServicesProps {
   categoriesWithServices: Category[] &
@@ -32,6 +33,7 @@ const AllServices = ({ categoriesWithServices }: AllServicesProps) => {
     },
   });
   const mutation = useAddUserServicesMutation();
+  const router = useRouter();
 
   const watchCategory = form.watch("category");
   const watchServices = form.watch("services");
@@ -41,11 +43,11 @@ const AllServices = ({ categoriesWithServices }: AllServicesProps) => {
   ]);
 
   function onSubmit(data: UserServicesSchemaType) { 
-    console.log(data.services);
        
     mutation.mutate(data.services, {
       onSuccess: () => {
         form.reset();
+        router.refresh();
       },
     });
   }
@@ -58,8 +60,8 @@ const AllServices = ({ categoriesWithServices }: AllServicesProps) => {
 
   return (
     <Dialog onOpenChange={() => form.reset()}>
-      <DialogTrigger className="border max-h-[50px] border-cyan-500 bg-background hover:bg-accent text-cyan-500 px-6 py-2 rounded-full">
-        Change Your Services
+      <DialogTrigger className="border transition max-h-[50px] border-cyan-500 bg-background hover:bg-accent text-cyan-500 px-6 py-2 rounded-full">
+        Add Your Services
       </DialogTrigger>
       <DialogContent className="max-w-[700px] w-full">
         <h2 className="text-3xl md:text-4xl font-bold text-center text-cyan-500 mt-8 mb-4">

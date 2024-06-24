@@ -46,19 +46,25 @@ export function Availability() {
 
   const selectedDate = form.watch("date");
   const queryClient = useQueryClient();
+
   const { data } = useQuery({
-    queryKey: ["currentDate"],
-    queryFn: async () => await useGetDate({ selectedDate }),
+    queryKey: ["currentDate", selectedDate],
+    queryFn: () => useGetDate({ selectedDate }), // Updated here
   });
-  form.setValue("hours", data?.hours.map(hour => hour.time));
+
+  useEffect(() => {
+    form.setValue("hours", data?.hours.map(hour => hour.time) || []);
+  }, [data, form]);
+
+  useEffect(() => {
+    queryClient.invalidateQueries({ queryKey: ["currentDate"] });
+  }, [selectedDate, queryClient]);
 
   async function onSubmit(data: AddAvailabilitySchemaType) {
     mutation.mutate(data);
   }
 
-  useEffect(() => {
-    queryClient.invalidateQueries({ queryKey: ["currentDate"] });
-  }, [selectedDate]);
+  const minutes = useGenerateMinutes(); // Moved this outside of the return statement
 
   return (
     <Form {...form}>
@@ -70,7 +76,7 @@ export function Availability() {
             <FormItem>
               <div className="mb-4 flex flex-col md:flex-row gap-3 justify-between">
                 <div className="flex flex-col">
-                  <FormLabel className="font-bold text-2xl xl:text-3xl">
+                  <FormLabel className="font-bold text-3xl">
                     Your Hours
                   </FormLabel>
                   <FormDescription>
@@ -119,7 +125,7 @@ export function Availability() {
                 />
               </div>
               <div className="h-[400px] overflow-auto flex flex-col gap-1">
-                {useGenerateMinutes().map((item) => (
+                {minutes.map((item) => (
                   <FormItem
                     key={item.time}
                     className={cn(

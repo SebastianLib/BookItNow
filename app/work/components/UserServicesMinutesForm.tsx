@@ -40,7 +40,7 @@ export function UserServicesMinutesForm({
               <div key={index} className="flex flex-col gap-2 my-4">
                 <h3 className="text-cyan-500">{service.name}</h3>
                 <Select
-                  onValueChange={(e) => {
+                    onValueChange={(e) => {
                     const newValues = [...form.getValues().services];
                     newValues[index].minutes = Number(e);
                     form.setValue("services", newValues);

@@ -1,5 +1,5 @@
 import { authOptions } from "@/lib/auth";
-import  db  from "@/lib/db";
+import db from "@/lib/db";
 import { getServerSession } from "next-auth";
 import { redirect } from "next/navigation";
 import React from "react";
@@ -20,32 +20,34 @@ const WorkPage = async () => {
       service: true,
     },
   });
-  const userServicesIds = userServices.map((userService) => userService.serviceId);
-  
+  const userServicesIds = userServices.map(
+    (userService) => userService.serviceId
+  );
+
   const categoriesWithServices = await db.category.findMany({
-    where: {
-    },
+    where: {},
     include: {
       services: {
         where: {
           NOT: {
             id: {
-              in: userServicesIds
+              in: userServicesIds,
             },
           },
         },
       },
     },
   });
-  
 
   return (
-    <MaxWidthWrapper className="grid md:grid-cols-2">
-      <div>
-      <AllServices categoriesWithServices={categoriesWithServices}/>
+    <MaxWidthWrapper className="grid lg:grid-cols-2 gap-5">
+      <div className="space-y-10 flex flex-col items-center md:items-start">
+        <UserServices services={userServices} />
+        <AllServices categoriesWithServices={categoriesWithServices} />
       </div>
-      {/* <UserServices services={userServices} /> */}
-      <Availability/>
+      <div>
+        <Availability />
+      </div>
     </MaxWidthWrapper>
   );
 };
