@@ -61,3 +61,27 @@ export async function PUT(req: Request) {
         return NextResponse.json({ message: "Something went wrong" }, { status: 500 });
     }
 }
+
+
+export async function DELETE(req: Request) {
+    try {
+        const session = await getServerSession(authOptions);
+        if (!session?.user.id) {
+            return NextResponse.json({ message: "unauthorized" }, { status: 401 });
+        }
+        const {id} = await req.json();
+
+        if (!id) {
+            return NextResponse.json({ message: "data is missing" }, { status: 400 });
+        }
+        await db.userService.delete({
+            where: {
+                id
+            },
+        });
+
+        return NextResponse.json({ message: "Service updated successfully" }, { status: 200 });
+    } catch (error) {
+        return NextResponse.json({ message: "Something went wrong" }, { status: 500 });
+    }
+}

@@ -2,9 +2,12 @@ import { useToast } from "@/components/ui/use-toast";
 import { EditUserSchemaType } from "@/schemas/EditUserProfile";
 import { useMutation } from "@tanstack/react-query";
 import axios, { AxiosError } from "axios";
+import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
 
 export function useUpdateUserMutation() {
+  const { update } = useSession()
+
     const router = useRouter();
   const { toast } = useToast()
   return useMutation({
@@ -23,7 +26,7 @@ export function useUpdateUserMutation() {
         title: "Hurra!",
         description: "You have successfully updated your account",
       });
-      router.refresh();
+      update();
     }
   });
 }

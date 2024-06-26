@@ -26,18 +26,20 @@ import { toast } from "@/components/ui/use-toast";
 import { Category } from "@prisma/client";
 import { cn } from "@/lib/utils";
 import { Homeschema, HomeschemaType } from "@/schemas/HomeSchema";
+import { useRouter } from "next/navigation";
 
 interface CategoryFormProps {
   categories: Category[];
 }
 
 export function CategoryForm({ categories }: CategoryFormProps) {
+  const router = useRouter();
   const form = useForm<HomeschemaType>({
     resolver: zodResolver(Homeschema),
   });
 
-  function onSubmit(data: HomeschemaType) {
-
+  function onSubmit(data: HomeschemaType) {    
+    router.push(`/search/${data.category}`)
   }
   return (
     <Form {...form}>

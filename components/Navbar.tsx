@@ -12,7 +12,7 @@ import { Skeleton } from "./ui/skeleton";
 import { useAuthModalStore } from "@/store/AuthModalStore";
 
 const Navbar = () => {
-  const {onClose, onOpen, isOpen, type, changeType} = useAuthModalStore(state => state)
+  const {onClose, onOpen, isOpen} = useAuthModalStore(state => state)
 
   const { data, status } = useSession();
 

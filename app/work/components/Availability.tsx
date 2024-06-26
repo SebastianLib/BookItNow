@@ -47,9 +47,13 @@ export function Availability() {
   const selectedDate = form.watch("date");
   const queryClient = useQueryClient();
 
+  const queryFn = () => {
+    return useGetDate({ selectedDate });
+  };
+
   const { data } = useQuery({
     queryKey: ["currentDate", selectedDate],
-    queryFn: () => useGetDate({ selectedDate }), // Updated here
+    queryFn,
   });
 
   useEffect(() => {
@@ -68,14 +72,14 @@ export function Availability() {
 
   return (
     <Form {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
+      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8 mb-10">
         <FormField
           control={form.control}
           name="hours"
           render={({ field }) => (
             <FormItem>
-              <div className="mb-4 flex flex-col md:flex-row gap-3 justify-between">
-                <div className="flex flex-col">
+              <div className="mb-4 flex items-center lg:items-start flex-col lg:flex-row gap-3 justify-between">
+                <div className="flex flex-col text-center lg:text-left">
                   <FormLabel className="font-bold text-3xl">
                     Your Hours
                   </FormLabel>
@@ -87,7 +91,7 @@ export function Availability() {
                   control={form.control}
                   name="date"
                   render={({ field }) => (
-                    <FormItem className="flex flex-col md:self-end">
+                    <FormItem className="flex flex-col lg:self-end">
                       <Popover>
                         <PopoverTrigger asChild>
                           <FormControl>
@@ -162,7 +166,12 @@ export function Availability() {
             </FormItem>
           )}
         />
-        <Button disabled={mutation.isPending} type="submit">
+        <Button 
+        size={"lg"} 
+        disabled={mutation.isPending} 
+        type="submit"
+        className="w-full lg:w-fit" 
+        >
           Submit
         </Button>
       </form>

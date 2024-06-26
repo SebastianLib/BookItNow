@@ -60,7 +60,7 @@ const AllServices = ({ categoriesWithServices }: AllServicesProps) => {
 
   return (
     <Dialog onOpenChange={() => form.reset()}>
-      <DialogTrigger className="border transition max-h-[50px] border-cyan-500 bg-background hover:bg-accent text-cyan-500 px-6 py-2 rounded-full">
+      <DialogTrigger className="border transition h-[50px] w-full lg:w-fit border-cyan-500 bg-background hover:bg-accent text-cyan-500 px-6 py-2 rounded-full">
         Add Your Services
       </DialogTrigger>
       <DialogContent className="max-w-[700px] w-full">

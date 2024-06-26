@@ -24,7 +24,7 @@ model UserAvailability {
   id       String  @id @default(auto()) @map("_id") @db.ObjectId
   date     String
   reserved Boolean @default(false)
-  user     User?   @relation(fields: [userId], references: [id])
+  user     User?   @relation(fields: [userId], references: [id], onDelete: Cascade)
   userId   String  @db.ObjectId
   hours    Hours[]
 }
@@ -33,7 +33,7 @@ model Hours {
   id                 String            @id @default(auto()) @map("_id") @db.ObjectId
   time               Int
   isTaken            Boolean           @default(false)
-  userAvailability   UserAvailability? @relation(fields: [userAvailabilityId], references: [id])
+  userAvailability   UserAvailability? @relation(fields: [userAvailabilityId], references: [id], onDelete: Cascade)
   userAvailabilityId String            @db.ObjectId
 }
 
@@ -46,7 +46,7 @@ model Category {
 model Service {
   id          String        @id @default(auto()) @map("_id") @db.ObjectId
   name        String        @unique
-  category    Category      @relation(fields: [categoryId], references: [id])
+  category    Category      @relation(fields: [categoryId], references: [id], onDelete: Cascade)
   categoryId  String        @db.ObjectId
   UserService UserService[]
 }

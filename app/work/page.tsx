@@ -40,14 +40,12 @@ const WorkPage = async () => {
   });
 
   return (
-    <MaxWidthWrapper className="grid lg:grid-cols-2 gap-5">
-      <div className="space-y-10 flex flex-col items-center md:items-start">
+    <MaxWidthWrapper className="grid lg:grid-cols-2 gap-20 lg:gap-5">
+      <div className="space-y-8 flex flex-col items-center lg:items-start">
         <UserServices services={userServices} />
         <AllServices categoriesWithServices={categoriesWithServices} />
       </div>
-      <div>
-        <Availability />
-      </div>
+      <Availability />
     </MaxWidthWrapper>
   );
 };

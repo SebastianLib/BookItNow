@@ -2,7 +2,6 @@
 import db from "@/lib/db";
 import { CategoryForm } from "./components/CategoryForm";
 export default async function Home() {
-  // const session = await getServerSession(authOptions)
   const categories = await db.category.findMany();
 
   return (

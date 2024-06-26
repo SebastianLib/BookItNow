@@ -55,14 +55,21 @@ export const authOptions: NextAuthOptions = {
             return token;
         },
         async session({ session, token }) {
-                
-             return {
-                ...session,
-                user: {
-                    ...session.user,
-                    id: token.sub,
-                    isCreator: token.isCreator
+            const user = await db.user.findUnique({
+                where: {
+                    email: session.user.email
                 }
+            });
+        
+            if (user) {
+                const { password, ...rest } = user;
+        
+                return {
+                    ...session,
+                    user: rest 
+                };
+            } else {
+                return session;
             }
         }
     }
