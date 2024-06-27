@@ -39,7 +39,7 @@ export function CategoryForm({ categories }: CategoryFormProps) {
   });
 
   function onSubmit(data: HomeschemaType) {    
-    router.push(`/search/${data.category}`)
+    router.push(`/search?category=${data.category}`)
   }
   return (
     <Form {...form}>
