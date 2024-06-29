@@ -4,8 +4,9 @@ import React, { useEffect, useState } from "react";
 import SearchForm from "./components/SearchForm";
 import { useSearchParams } from "next/navigation";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
-import { useGetWorkers } from "@/hooks/useGetWorkers";
 import SearchWorkers from "./components/SearchWorkers";
+import axios from "axios";
+import { Category, User, UserService } from "@prisma/client";
 
 const SearchPage = () => {
   const queryClient = useQueryClient();
@@ -21,7 +22,13 @@ const SearchPage = () => {
 
   const { data, isLoading } = useQuery({
     queryKey: ["categories", url],
-    queryFn: () => useGetWorkers(url),
+    queryFn: async():Promise<{
+      categories: Category[];
+      users: (UserService & { user: User })[];
+    }> => {
+      const {data} = await axios.get(url);
+      return data
+    },
   });
 
   useEffect(() => {
